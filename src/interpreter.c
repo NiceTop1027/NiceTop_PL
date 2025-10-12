@@ -107,6 +107,7 @@ static Value eval_primary(Interpreter* interp) {
         
         if (file_val.type == VAL_FILE && file_val.as.file && content.type == VAL_STRING) {
             fputs(content.as.string, file_val.as.file);
+            fflush(file_val.as.file);  // 버퍼 플러시
         }
         return value_null();
     }
