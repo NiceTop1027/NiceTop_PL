@@ -23,6 +23,7 @@ typedef enum {
     TOKEN_NIF,
     TOKEN_NELSE,
     TOKEN_NLOOP,
+    TOKEN_NFOR,
     TOKEN_NFUNC,
     TOKEN_NRET,
     TOKEN_NOUT,

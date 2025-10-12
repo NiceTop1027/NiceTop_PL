@@ -338,6 +338,79 @@ void execute_statement(Interpreter* interp) {
         }
         interp->pos = saved_pos;
     }
+    else if (token.type == TOKEN_NFOR) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        
+        // 초기화 실행
+        if (current_token(interp).type != TOKEN_SEMICOLON) {
+            execute_statement(interp);
+        }
+        
+        // 첫 번째 세미콜론까지 건너뛰기
+        while (current_token(interp).type != TOKEN_SEMICOLON && current_token(interp).type != TOKEN_EOF) {
+            advance_interp(interp);
+        }
+        advance_interp(interp); // skip ;
+        
+        // 조건식 시작 위치
+        int cond_start = interp->pos;
+        
+        // 두 번째 세미콜론까지 건너뛰기
+        while (current_token(interp).type != TOKEN_SEMICOLON && current_token(interp).type != TOKEN_EOF) {
+            advance_interp(interp);
+        }
+        advance_interp(interp); // skip ;
+        
+        // 증가식 시작 위치
+        int incr_start = interp->pos;
+        
+        // ) 까지 건너뛰기
+        while (current_token(interp).type != TOKEN_RPAREN && current_token(interp).type != TOKEN_EOF) {
+            advance_interp(interp);
+        }
+        int incr_end = interp->pos;
+        advance_interp(interp); // skip )
+        
+        // { 건너뛰기
+        advance_interp(interp);
+        
+        // 본문 시작 위치
+        int body_start = interp->pos;
+        
+        // } 찾기
+        int brace_count = 1;
+        while (brace_count > 0 && current_token(interp).type != TOKEN_EOF) {
+            if (current_token(interp).type == TOKEN_LBRACE) brace_count++;
+            if (current_token(interp).type == TOKEN_RBRACE) brace_count--;
+            advance_interp(interp);
+        }
+        int body_end = interp->pos - 1;
+        int saved_pos = interp->pos;
+        
+        // for 루프 실행
+        while (true) {
+            // 조건 체크
+            interp->pos = cond_start;
+            Value condition = interpreter_eval_expression(interp);
+            if (!value_is_truthy(condition)) break;
+            
+            // 본문 실행
+            interp->pos = body_start;
+            while (interp->pos < body_end && !interp->returning) {
+                execute_statement(interp);
+            }
+            if (interp->returning) break;
+            
+            // 증가식 실행
+            interp->pos = incr_start;
+            while (interp->pos < incr_end && current_token(interp).type != TOKEN_EOF) {
+                execute_statement(interp);
+            }
+        }
+        
+        interp->pos = saved_pos;
+    }
     else if (token.type == TOKEN_NRET) {
         advance_interp(interp);
         if (current_token(interp).type != TOKEN_RBRACE) {

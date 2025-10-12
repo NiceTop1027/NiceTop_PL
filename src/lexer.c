@@ -116,6 +116,7 @@ static void read_identifier(Lexer* lexer) {
     else if (strcmp(buffer, "nif") == 0) type = TOKEN_NIF;
     else if (strcmp(buffer, "nelse") == 0) type = TOKEN_NELSE;
     else if (strcmp(buffer, "nloop") == 0) type = TOKEN_NLOOP;
+    else if (strcmp(buffer, "nfor") == 0) type = TOKEN_NFOR;
     else if (strcmp(buffer, "nfunc") == 0) type = TOKEN_NFUNC;
     else if (strcmp(buffer, "nret") == 0) type = TOKEN_NRET;
     else if (strcmp(buffer, "nout") == 0) type = TOKEN_NOUT;

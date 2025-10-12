@@ -32,22 +32,22 @@ void value_print(Value val) {
     switch (val.type) {
         case VAL_NUMBER:
             if (val.as.number == (int)val.as.number) {
-                printf("%d", (int)val.as.number);
+                printf("%d\n", (int)val.as.number);
             } else {
-                printf("%g", val.as.number);
+                printf("%g\n", val.as.number);
             }
             break;
         case VAL_STRING:
-            printf("%s", val.as.string);
+            printf("%s\n", val.as.string);
             break;
         case VAL_BOOL:
-            printf("%s", val.as.boolean ? "true" : "false");
+            printf("%s\n", val.as.boolean ? "true" : "false");
             break;
         case VAL_NULL:
-            printf("null");
+            printf("null\n");
             break;
         default:
-            printf("unknown");
+            printf("unknown\n");
             break;
     }
 }
