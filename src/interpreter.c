@@ -362,15 +362,6 @@ void execute_statement(Interpreter* interp) {
         advance_interp(interp); // skip type
         Token name = current_token(interp);
         advance_interp(interp);
-        
-        // 초기화 없이 선언만 하는 경우
-        if (current_token(interp).type != TOKEN_ASSIGN) {
-            strcpy(interp->variables[interp->var_count].name, name.value);
-            interp->variables[interp->var_count].value = value_null();
-            interp->var_count++;
-            return;
-        }
-        
         advance_interp(interp); // skip =
         Value val = interpreter_eval_expression(interp);
         // env_define(interp->env, name.value, val);

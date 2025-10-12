@@ -1,11 +1,22 @@
 # 파일 I/O 예제
-# 주의: 현재 파일 I/O는 기본 구현만 되어있습니다
 
-nout("=== 파일 I/O 데모 ===")
-nout("파일 I/O 기능이 구현되어 있습니다:")
-nout("- nopen(filename, mode)")
-nout("- nread(file)")
-nout("- nwrite(file, content)")
-nout("- nclose(file)")
+nout("=== 파일 쓰기 ===")
+
+# 파일 쓰기
+nstring f = nopen("test_output.txt", "w")
+nwrite(f, "Hello from NiceTop!\n")
+nwrite(f, "Line 2\n")
+nwrite(f, "Line 3\n")
+nclose(f)
+nout("파일 작성 완료!")
+
 nout("")
-nout("향후 업데이트에서 완전히 작동할 예정입니다.")
+nout("=== 파일 읽기 ===")
+
+# 파일 읽기
+nstring f2 = nopen("test_output.txt", "r")
+nstring content = nread(f2)
+nclose(f2)
+
+nout("파일 내용:")
+nout(content)
