@@ -119,6 +119,7 @@ static void read_identifier(Lexer* lexer) {
     else if (strcmp(buffer, "nfor") == 0) type = TOKEN_NFOR;
     else if (strcmp(buffer, "nbreak") == 0) type = TOKEN_NBREAK;
     else if (strcmp(buffer, "ncontinue") == 0) type = TOKEN_NCONTINUE;
+    else if (strcmp(buffer, "narray") == 0) type = TOKEN_NARRAY;
     else if (strcmp(buffer, "nfunc") == 0) type = TOKEN_NFUNC;
     else if (strcmp(buffer, "nret") == 0) type = TOKEN_NRET;
     else if (strcmp(buffer, "nout") == 0) type = TOKEN_NOUT;
@@ -203,6 +204,14 @@ void lexer_tokenize(Lexer* lexer) {
                 } else {
                     add_token(lexer, TOKEN_GREATER, ">");
                 }
+                break;
+            case '[':
+                add_token(lexer, TOKEN_LBRACKET, "[");
+                advance(lexer);
+                break;
+            case ']':
+                add_token(lexer, TOKEN_RBRACKET, "]");
+                advance(lexer);
                 break;
             default:
                 advance(lexer);

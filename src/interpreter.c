@@ -40,6 +40,31 @@ static Value eval_primary(Interpreter* interp) {
         return value_bool(false);
     }
     
+    if (token.type == TOKEN_NINPUT) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        
+        // 프롬프트 출력
+        if (current_token(interp).type != TOKEN_RPAREN) {
+            Value prompt = interpreter_eval_expression(interp);
+            if (prompt.type == VAL_STRING) {
+                printf("%s", prompt.as.string);
+            }
+        }
+        advance_interp(interp); // skip )
+        
+        // 사용자 입력 받기
+        char input[MAX_TOKEN_LENGTH];
+        if (fgets(input, sizeof(input), stdin)) {
+            size_t len = strlen(input);
+            if (len > 0 && input[len-1] == '\n') {
+                input[len-1] = '\0';
+            }
+            return value_string(input);
+        }
+        return value_string("");
+    }
+    
     if (token.type == TOKEN_IDENTIFIER) {
         char name[MAX_TOKEN_LENGTH];
         strcpy(name, token.value);

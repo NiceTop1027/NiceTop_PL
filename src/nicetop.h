@@ -26,6 +26,7 @@ typedef enum {
     TOKEN_NFOR,
     TOKEN_NBREAK,
     TOKEN_NCONTINUE,
+    TOKEN_NARRAY,
     TOKEN_NFUNC,
     TOKEN_NRET,
     TOKEN_NOUT,
@@ -51,6 +52,8 @@ typedef enum {
     TOKEN_RPAREN,
     TOKEN_LBRACE,
     TOKEN_RBRACE,
+    TOKEN_LBRACKET,
+    TOKEN_RBRACKET,
     TOKEN_COMMA,
     TOKEN_SEMICOLON,
     TOKEN_EOF
@@ -69,8 +72,13 @@ typedef enum {
     VAL_STRING,
     VAL_BOOL,
     VAL_NULL,
-    VAL_FUNCTION
+    VAL_FUNCTION,
+    VAL_ARRAY
 } ValueType;
+
+// 전방 선언
+typedef struct Value Value;
+typedef struct Array Array;
 
 // 함수 정의
 typedef struct Function {
@@ -81,16 +89,24 @@ typedef struct Function {
     int body_end;
 } Function;
 
+// 배열 구조체
+struct Array {
+    Value* elements;
+    int length;
+    int capacity;
+};
+
 // 값
-typedef struct {
+struct Value {
     ValueType type;
     union {
         double number;
         char string[MAX_TOKEN_LENGTH];
         bool boolean;
         Function* function;
+        Array* array;
     } as;
-} Value;
+};
 
 // 변수
 typedef struct {
