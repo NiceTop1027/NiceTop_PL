@@ -2,6 +2,9 @@
 
 ## 개요
 **NiceTop**은 절차지향 프로그래밍 패러다임을 따르는 동적 타입 언어입니다.
+- C 언어로 구현된 네이티브 인터프리터
+- 모든 키워드에 `n` 접두사 사용
+- 세미콜론 불필요
 
 ## 파일 확장자
 `.nt` (NiceTop)
@@ -9,7 +12,7 @@
 ## 기본 문법
 
 ### 주석
-```
+```c
 # 한 줄 주석
 ```
 
@@ -18,17 +21,30 @@
   - 예: `10`, `3.14`, `-5`
 - **문자열 (String)**: 큰따옴표 또는 작은따옴표
   - 예: `"Hello"`, `'World'`
-- **불린 (Boolean)**: `true`, `false`
+- **불린 (Boolean)**: `ntrue`, `nfalse`
 - **Null**: `null` (반환값이 없을 때)
 
-### 변수
-```javascript
-let 변수명 = 값
+### 변수 선언 (C 스타일)
+NiceTop은 C 언어처럼 타입을 먼저 선언합니다.
+
+```c
+nint 변수명 = 값      # 정수형
+nfloat 변수명 = 값    # 실수형
+nstring 변수명 = 값   # 문자열
+nbool 변수명 = 값     # 불린형
 ```
 
 변수 재할당:
-```javascript
+```c
 변수명 = 새로운값
+```
+
+예제:
+```c
+nint age = 25
+nfloat pi = 3.14
+nstring name = "철수"
+nbool isReady = ntrue
 ```
 
 ### 연산자
@@ -56,55 +72,116 @@ let 변수명 = 값
 ### 제어 구조
 
 #### 조건문
-```javascript
-if (조건) {
+```c
+nif (조건) {
     # 참일 때 실행
-} else {
+} nelse {
     # 거짓일 때 실행
 }
 ```
 
+예제:
+```c
+nint age = 25
+nif (age >= 20) {
+    nout("성인입니다")
+} nelse {
+    nout("미성년자입니다")
+}
+```
+
 #### 반복문
-```javascript
-while (조건) {
+
+**while 루프 (nloop)**
+```c
+nloop (조건) {
     # 반복 실행
 }
 ```
 
-### 프로시저 (함수)
-```javascript
-function 함수명(매개변수1, 매개변수2) {
+예제:
+```c
+nint i = 1
+nloop (i <= 5) {
+    nout(i)
+    i = i + 1
+}
+```
+
+**for 루프 (nfor)**
+```c
+nfor (초기화; 조건; 증가) {
+    # 반복 실행
+}
+```
+
+예제:
+```c
+nfor (nint i = 1; i <= 5; i = i + 1) {
+    nout(i)
+}
+```
+
+**중첩 루프**
+```c
+nfor (nint x = 1; x <= 3; x = x + 1) {
+    nfor (nint y = 1; y <= 3; y = y + 1) {
+        nout(x * y)
+    }
+}
+```
+
+### 함수
+```c
+nfunc 함수명(매개변수1, 매개변수2) {
     # 함수 본문
-    return 반환값  # 선택사항
+    nret 반환값  # 선택사항
 }
 ```
 
 함수 호출:
-```javascript
+```c
 함수명(인자1, 인자2)
 ```
 
+예제:
+```c
+nfunc add(a, b) {
+    nret a + b
+}
+
+nint result = add(10, 20)
+nout(result)  # 30
+```
+
 ### 출력
-```javascript
-print(값)
+```c
+nout(값)  # 자동으로 개행 추가
+```
+
+예제:
+```c
+nout("Hello, World!")
+nout(42)
+nout(3.14)
 ```
 
 ## 프로그램 구조
 
 NiceTop 프로그램은 순차적으로 실행되는 문장들의 집합입니다.
 
-```javascript
+```c
 # 1. 변수 선언
-let x = 10
+nint x = 10
 
-# 2. 프로시저 정의
-function process(n) {
-    return n * 2
+# 2. 함수 정의
+nfunc process(n) {
+    nret n * 2
 }
 
 # 3. 실행
-let result = process(x)
-print(result)
+nint result = process(x)
+nout(result)
 ```
 
 ## 스코프 규칙
@@ -122,39 +199,97 @@ print(result)
 
 ## 예제
 
-### 절차지향 스타일 프로그램
-```javascript
-# 데이터 정의
-let balance = 1000
-
-# 프로시저 정의
-function deposit(amount) {
-    balance = balance + amount
-    print("입금: ")
-    print(amount)
+### 구구단 프로그램
+```c
+# 9단 출력
+nint dan = 9
+nfor (nint i = 1; i <= 9; i = i + 1) {
+    nout(dan + " * " + i + " = " + dan * i)
 }
+```
 
-function withdraw(amount) {
-    if (balance >= amount) {
-        balance = balance - amount
-        print("출금: ")
-        print(amount)
-    } else {
-        print("잔액 부족")
+출력:
+```
+9 * 1 = 9
+9 * 2 = 18
+9 * 3 = 27
+...
+9 * 9 = 81
+```
+
+### 팩토리얼 계산
+```c
+nfunc factorial(n) {
+    nif (n <= 1) {
+        nret 1
+    } nelse {
+        nret n * factorial(n - 1)
     }
 }
 
-function show_balance() {
-    print("현재 잔액: ")
-    print(balance)
+nout("5! = ")
+nout(factorial(5))  # 120
+```
+
+### 절차지향 스타일 프로그램
+```c
+# 데이터 정의
+nint balance = 1000
+
+# 함수 정의
+nfunc deposit(amount) {
+    balance = balance + amount
+    nout("입금: " + amount)
 }
 
-# 프로시저 실행
+nfunc withdraw(amount) {
+    nif (balance >= amount) {
+        balance = balance - amount
+        nout("출금: " + amount)
+    } nelse {
+        nout("잔액 부족")
+    }
+}
+
+nfunc show_balance() {
+    nout("현재 잔액: " + balance)
+}
+
+# 실행
 show_balance()
 deposit(500)
 withdraw(300)
 show_balance()
 ```
+
+## NiceTop 키워드 목록
+
+| 키워드 | 의미 | 예제 |
+|--------|------|------|
+| `nint` | 정수형 타입 | `nint x = 10` |
+| `nfloat` | 실수형 타입 | `nfloat pi = 3.14` |
+| `nstring` | 문자열 타입 | `nstring name = "철수"` |
+| `nbool` | 불린 타입 | `nbool flag = ntrue` |
+| `nif` | 조건문 if | `nif (x > 0) { }` |
+| `nelse` | 조건문 else | `nelse { }` |
+| `nloop` | while 반복문 | `nloop (i < 10) { }` |
+| `nfor` | for 반복문 | `nfor (nint i=0; i<10; i=i+1) { }` |
+| `nfunc` | 함수 정의 | `nfunc add(a, b) { }` |
+| `nret` | 반환 | `nret a + b` |
+| `nout` | 출력 | `nout("Hello")` |
+| `ntrue` | 참 | `nbool flag = ntrue` |
+| `nfalse` | 거짓 | `nbool flag = nfalse` |
+
+## 이스케이프 문자
+
+| 이스케이프 | 의미 |
+|-----------|------|
+| `\n` | 개행 |
+| `\t` | 탭 |
+| `\r` | 캐리지 리턴 |
+| `\\` | 백슬래시 |
+| `\"` | 큰따옴표 |
+| `\'` | 작은따옴표 |
 
 ## 제한사항
 
@@ -162,16 +297,17 @@ show_balance()
 - 배열/리스트
 - 딕셔너리/맵
 - 클래스/객체
-- for 루프
-- break/continue
+- break/continue 문
 - 예외 처리
 - 모듈 시스템
 - 파일 I/O
+- 사용자 입력
 
 ## 향후 계획
 
-- 배열 자료구조
-- for 루프
-- break/continue 문
-- 표준 라이브러리
-- 모듈 시스템
+- [ ] 배열 자료구조
+- [ ] break/continue 문
+- [ ] 사용자 입력 (ninput)
+- [ ] 표준 라이브러리
+- [ ] 모듈 시스템
+- [ ] 파일 I/O
