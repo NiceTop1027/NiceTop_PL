@@ -1,0 +1,30 @@
+{
+  "name": "nicetop",
+  "displayName": "NiceTop Language Support",
+  "description": "Syntax highlighting for NiceTop programming language",
+  "version": "1.0.0",
+  "publisher": "nicetop",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "nicetop",
+        "aliases": ["NiceTop", "nicetop"],
+        "extensions": [".nt"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nicetop",
+        "scopeName": "source.nicetop",
+        "path": "./syntaxes/nicetop.tmLanguage.json"
+      }
+    ]
+  }
+}
