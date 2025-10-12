@@ -12,6 +12,7 @@ nicetop
 # 빌드 디렉토리
 build/
 dist/
+release/
 
 # IDE
 .vscode/
