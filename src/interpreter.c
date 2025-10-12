@@ -358,6 +358,29 @@ void execute_statement(Interpreter* interp) {
         advance_interp(interp); // skip )
         value_print(val);
     }
+    else if (token.type == TOKEN_NWRITE) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value file_val = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip ,
+        Value content = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (file_val.type == VAL_FILE && file_val.as.file && content.type == VAL_STRING) {
+            fputs(content.as.string, file_val.as.file);
+            fflush(file_val.as.file);
+        }
+    }
+    else if (token.type == TOKEN_NCLOSE) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value file_val = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (file_val.type == VAL_FILE && file_val.as.file) {
+            fclose(file_val.as.file);
+        }
+    }
     else if (token.type == TOKEN_NINT || token.type == TOKEN_NFLOAT || 
              token.type == TOKEN_NSTRING || token.type == TOKEN_NBOOL || token.type == TOKEN_NARRAY) {
         advance_interp(interp); // skip type
