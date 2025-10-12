@@ -27,7 +27,7 @@ void run_file(const char* filename) {
     interpreter_run(&interp);
     
     free(source);
-    free(interp.env);
+    // free(interp.env);
 }
 
 void repl() {
@@ -37,8 +37,8 @@ void repl() {
     Interpreter interp;
     Token tokens[MAX_TOKENS];
     interp.tokens = tokens;
-    interp.env = env_create(NULL);
-    interp.function_count = 0;
+    // interp.env = env_create(NULL);
+    // interp.function_count = 0;
     interp.returning = false;
     
     char line[1024];
@@ -63,7 +63,7 @@ void repl() {
         }
     }
     
-    free(interp.env);
+    // free(interp.env);
 }
 
 int main(int argc, char** argv) {

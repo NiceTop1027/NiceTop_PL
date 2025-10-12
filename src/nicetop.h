@@ -24,6 +24,8 @@ typedef enum {
     TOKEN_NELSE,
     TOKEN_NLOOP,
     TOKEN_NFOR,
+    TOKEN_NBREAK,
+    TOKEN_NCONTINUE,
     TOKEN_NFUNC,
     TOKEN_NRET,
     TOKEN_NOUT,
@@ -115,13 +117,16 @@ typedef struct {
 // 파서/인터프리터
 typedef struct {
     Token* tokens;
-    int pos;
     int token_count;
-    Environment* env;
+    int pos;
+    Variable variables[MAX_VARIABLES];
+    int var_count;
     Function functions[100];
-    int function_count;
-    bool returning;
+    int func_count;
     Value return_value;
+    bool returning;
+    bool breaking;
+    bool continuing;
 } Interpreter;
 
 // 함수 선언

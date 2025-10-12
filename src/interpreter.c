@@ -51,7 +51,7 @@ static Value eval_primary(Interpreter* interp) {
             
             // 함수 찾기
             Function* func = NULL;
-            for (int i = 0; i < interp->function_count; i++) {
+            for (int i = 0; i < interp->func_count; i++) {
                 if (strcmp(interp->functions[i].name, name) == 0) {
                     func = &interp->functions[i];
                     break;
@@ -75,14 +75,14 @@ static Value eval_primary(Interpreter* interp) {
             advance_interp(interp); // skip )
             
             // 새 환경 생성
-            Environment* func_env = env_create(interp->env);
-            for (int i = 0; i < func->param_count; i++) {
-                env_define(func_env, func->params[i], args[i]);
-            }
+            // Environment* func_env = env_create(interp->env);
+            // for (int i = 0; i < func->param_count; i++) {
+            //     env_define(func_env, func->params[i], args[i]);
+            // }
             
             // 함수 실행
-            Environment* prev_env = interp->env;
-            interp->env = func_env;
+            // Environment* prev_env = interp->env;
+            // interp->env = func_env;
             int prev_pos = interp->pos;
             interp->pos = func->body_start;
             interp->returning = false;
@@ -93,14 +93,20 @@ static Value eval_primary(Interpreter* interp) {
             
             Value result = interp->returning ? interp->return_value : value_null();
             interp->returning = false;
-            interp->env = prev_env;
+            // interp->env = prev_env;
             interp->pos = prev_pos;
-            free(func_env);
+            // free(func_env);
             
             return result;
         }
         
-        return env_get(interp->env, name);
+        // return env_get(interp->env, name);
+        for (int i = 0; i < interp->var_count; i++) {
+            if (strcmp(interp->variables[i].name, name) == 0) {
+                return interp->variables[i].value;
+            }
+        }
+        return value_null();
     }
     
     if (token.type == TOKEN_LPAREN) {
@@ -242,7 +248,10 @@ void execute_statement(Interpreter* interp) {
         advance_interp(interp);
         advance_interp(interp); // skip =
         Value val = interpreter_eval_expression(interp);
-        env_define(interp->env, name.value, val);
+        // env_define(interp->env, name.value, val);
+        strcpy(interp->variables[interp->var_count].name, name.value);
+        interp->variables[interp->var_count].value = val;
+        interp->var_count++;
     }
     else if (token.type == TOKEN_IDENTIFIER) {
         Token name = current_token(interp);
@@ -250,7 +259,13 @@ void execute_statement(Interpreter* interp) {
         if (current_token(interp).type == TOKEN_ASSIGN) {
             advance_interp(interp);
             Value val = interpreter_eval_expression(interp);
-            env_set(interp->env, name.value, val);
+            // env_set(interp->env, name.value, val);
+            for (int i = 0; i < interp->var_count; i++) {
+                if (strcmp(interp->variables[i].name, name.value) == 0) {
+                    interp->variables[i].value = val;
+                    break;
+                }
+            }
         } else {
             interp->pos--;
             interpreter_eval_expression(interp);
@@ -331,11 +346,16 @@ void execute_statement(Interpreter* interp) {
             if (!value_is_truthy(condition)) break;
             
             interp->pos = body_start;
-            while (interp->pos < body_end && !interp->returning) {
+            while (interp->pos < body_end && !interp->returning && !interp->breaking) {
                 execute_statement(interp);
+                if (interp->continuing) {
+                    interp->continuing = false;
+                    break;
+                }
             }
-            if (interp->returning) break;
+            if (interp->returning || interp->breaking) break;
         }
+        interp->breaking = false;
         interp->pos = saved_pos;
     }
     else if (token.type == TOKEN_NFOR) {
@@ -397,10 +417,14 @@ void execute_statement(Interpreter* interp) {
             
             // 본문 실행
             interp->pos = body_start;
-            while (interp->pos < body_end && !interp->returning) {
+            while (interp->pos < body_end && !interp->returning && !interp->breaking) {
                 execute_statement(interp);
+                if (interp->continuing) {
+                    interp->continuing = false;
+                    break;
+                }
             }
-            if (interp->returning) break;
+            if (interp->returning || interp->breaking) break;
             
             // 증가식 실행
             interp->pos = incr_start;
@@ -409,7 +433,16 @@ void execute_statement(Interpreter* interp) {
             }
         }
         
+        interp->breaking = false;
         interp->pos = saved_pos;
+    }
+    else if (token.type == TOKEN_NBREAK) {
+        advance_interp(interp);
+        interp->breaking = true;
+    }
+    else if (token.type == TOKEN_NCONTINUE) {
+        advance_interp(interp);
+        interp->continuing = true;
     }
     else if (token.type == TOKEN_NRET) {
         advance_interp(interp);
@@ -447,17 +480,20 @@ void execute_statement(Interpreter* interp) {
         }
         func.body_end = interp->pos - 1;
         
-        interp->functions[interp->function_count++] = func;
+        interp->functions[interp->func_count++] = func;
     }
 }
 
-void interpreter_init(Interpreter* interp, Token* tokens, int count) {
+void interpreter_init(Interpreter* interp, Token* tokens, int token_count) {
     interp->tokens = tokens;
+    interp->token_count = token_count;
     interp->pos = 0;
-    interp->token_count = count;
-    interp->env = env_create(NULL);
-    interp->function_count = 0;
+    interp->var_count = 0;
+    interp->func_count = 0;
     interp->returning = false;
+    interp->breaking = false;
+    interp->continuing = false;
+    interp->return_value = value_null();
 }
 
 void interpreter_run(Interpreter* interp) {
