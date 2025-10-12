@@ -1,0 +1,35 @@
+# NiceTop Makefile for Windows (MinGW)
+# Windows에서 직접 빌드하는 경우 사용
+
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c11 -O2 -Isrc
+TARGET = nicetop.exe
+SRC_DIR = src
+SOURCES = $(SRC_DIR)/main.c $(SRC_DIR)/lexer.c $(SRC_DIR)/value.c $(SRC_DIR)/interpreter.c
+OBJECTS = $(SOURCES:.c=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
+	@echo "✓ nicetop.exe 컴파일 완료!"
+	@echo "사용법: nicetop.exe <파일.nt>"
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	del /Q $(OBJECTS) $(TARGET) 2>nul || echo "정리 완료"
+
+install: $(TARGET)
+	@echo "Windows에서는 install.bat을 관리자 권한으로 실행하세요"
+
+test: $(TARGET)
+	@echo "=== 테스트 시작 ==="
+	@echo [1] Hello World:
+	@$(TARGET) examples\hello.nt
+	@echo [2] Variables:
+	@$(TARGET) examples\variables.nt
+	@echo "=== 테스트 완료 ==="
+
+.PHONY: all clean install test

@@ -71,6 +71,11 @@ nout(factorial(5))  # 120
 - **NiceTop-1.0.0.dmg** (39KB) - DMG 설치 이미지
 - **nicetop-1.0.0-macos.zip** (24KB) - 바이너리 패키지
 
+### Windows
+- **nicetop-1.0.0-windows.zip** - Windows 실행 파일 (.exe)
+  1. 다운로드 및 압축 해제
+  2. `install.bat`을 관리자 권한으로 실행
+
 ### Linux
 소스에서 빌드:
 ```bash

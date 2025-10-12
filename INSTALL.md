@@ -123,13 +123,38 @@ gcc --version
 clang --version
 ```
 
-## Windows 지원
+## Windows 설치
 
-현재 Windows는 WSL(Windows Subsystem for Linux)을 통해 지원됩니다:
+### 방법 1: ZIP 바이너리 (권장)
+
+1. [nicetop-1.0.0-windows.zip](https://github.com/NiceTop1027/NiceTop_PL/releases) 다운로드
+2. 압축 해제
+3. `install.bat`을 **관리자 권한으로 실행**
+   - 마우스 오른쪽 버튼 클릭
+   - "관리자 권한으로 실행" 선택
+
+### 방법 2: 수동 설치
+
+1. `nicetop.exe`를 원하는 위치에 복사 (예: `C:\Program Files\NiceTop\`)
+2. 시스템 환경 변수 PATH에 해당 경로 추가
+3. 새 명령 프롬프트에서 `nicetop` 사용
+
+### 방법 3: WSL (Linux 환경)
+
+WSL(Windows Subsystem for Linux)을 통한 설치:
 
 1. WSL 설치
 2. Ubuntu 설치
 3. 위의 Linux 설치 방법 따라하기
+
+### 소스에서 빌드 (고급)
+
+MinGW 설치 후:
+```bash
+git clone https://github.com/NiceTop1027/NiceTop_PL.git
+cd NiceTop_PL
+make -f Makefile.windows
+```
 
 ## 도움말
 
