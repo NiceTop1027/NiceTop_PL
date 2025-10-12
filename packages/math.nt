@@ -1,0 +1,92 @@
+# Math Library for NiceTop
+# 수학 함수 라이브러리
+
+# 절댓값
+nfunc abs(x) {
+    nif (x < 0) {
+        nret -x
+    } nelse {
+        nret x
+    }
+}
+
+# 최댓값
+nfunc max(a, b) {
+    nif (a > b) {
+        nret a
+    } nelse {
+        nret b
+    }
+}
+
+# 최솟값
+nfunc min(a, b) {
+    nif (a < b) {
+        nret a
+    } nelse {
+        nret b
+    }
+}
+
+# 제곱
+nfunc pow(base, exp) {
+    nint result = 1
+    nint i = 0
+    nloop (i < exp) {
+        result = result * base
+        i = i + 1
+    }
+    nret result
+}
+
+# 팩토리얼
+nfunc factorial(n) {
+    nif (n <= 1) {
+        nret 1
+    } nelse {
+        nret n * factorial(n - 1)
+    }
+}
+
+# 피보나치
+nfunc fibonacci(n) {
+    nif (n <= 1) {
+        nret n
+    } nelse {
+        nret fibonacci(n - 1) + fibonacci(n - 2)
+    }
+}
+
+# 최대공약수 (GCD)
+nfunc gcd(a, b) {
+    nloop (b != 0) {
+        nint temp = b
+        b = a % b
+        a = temp
+    }
+    nret a
+}
+
+# 소수 판별
+nfunc isPrime(n) {
+    nif (n <= 1) {
+        nret nfalse
+    }
+    nif (n <= 3) {
+        nret ntrue
+    }
+    nif (n % 2 == 0) {
+        nret nfalse
+    }
+    
+    nint i = 3
+    nloop (i * i <= n) {
+        nif (n % i == 0) {
+            nret nfalse
+        }
+        i = i + 2
+    }
+    nret ntrue
+}
+
+nout("Math 라이브러리 로드 완료!")

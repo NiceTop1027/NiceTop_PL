@@ -1,0 +1,44 @@
+# 간단한 계산기 프로그램
+
+function add(a, b) {
+    return a + b
+}
+
+function subtract(a, b) {
+    return a - b
+}
+
+function multiply(a, b) {
+    return a * b
+}
+
+function divide(a, b) {
+    if (b == 0) {
+        print("오류: 0으로 나눌 수 없습니다")
+        return 0
+    } else {
+        return a / b
+    }
+}
+
+# 계산 수행
+let x = 100
+let y = 25
+
+print("=== 계산기 ===")
+print("x = ")
+print(x)
+print("y = ")
+print(y)
+
+print("덧셈: ")
+print(add(x, y))
+
+print("뺄셈: ")
+print(subtract(x, y))
+
+print("곱셈: ")
+print(multiply(x, y))
+
+print("나눗셈: ")
+print(divide(x, y))

@@ -1,0 +1,5 @@
+# NiceTop 언어 - Hello World
+# 확장자: .nt
+
+print("안녕하세요, NiceTop입니다!")
+print("절차지향 프로그래밍 언어")

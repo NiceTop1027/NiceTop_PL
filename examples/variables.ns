@@ -1,0 +1,13 @@
+# 변수 선언과 사용
+let name = "철수"
+let age = 25
+let height = 175.5
+
+print("이름: " + name)
+print(age)
+print(height)
+
+# 변수 재할당
+age = age + 1
+print("내년 나이: ")
+print(age)

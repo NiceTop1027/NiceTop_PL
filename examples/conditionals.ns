@@ -1,0 +1,28 @@
+# 조건문
+let score = 85
+
+if (score >= 90) {
+    print("A 학점")
+} else {
+    if (score >= 80) {
+        print("B 학점")
+    } else {
+        if (score >= 70) {
+            print("C 학점")
+        } else {
+            print("재수강")
+        }
+    }
+}
+
+# 비교 연산자
+let x = 10
+let y = 20
+
+if (x < y) {
+    print("x가 y보다 작습니다")
+}
+
+if (x == 10 and y == 20) {
+    print("둘 다 맞습니다!")
+}

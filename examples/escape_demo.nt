@@ -1,0 +1,29 @@
+# 이스케이프 문자 데모
+
+nout("=== NiceTop 이스케이프 문자 ===\n")
+
+# 개행 문자 \n
+nout("1. 개행 문자 (\\n):")
+nout("첫 줄\n두 번째 줄\n세 번째 줄\n")
+
+# 탭 문자 \t
+nout("2. 탭 문자 (\\t):")
+nout("이름:\t철수")
+nout("나이:\t25세")
+nout("직업:\t개발자\n")
+
+# 따옴표
+nout("3. 따옴표:")
+nout("그는 \"Hello, World!\"라고 말했다")
+nout("작은따옴표: \'NiceTop\'\n")
+
+# 백슬래시
+nout("4. 백슬래시 (\\\\):")
+nout("파일 경로: C:\\Program Files\\NiceTop\n")
+
+# 조합 예제
+nout("5. 복합 예제:")
+nstring menu = "--- 메뉴판 ---\n1.\t아메리카노\t3,000원\n2.\t카페라떼\t\t4,000원\n3.\t카푸치노\t\t4,500원"
+nout(menu)
+
+nout("\n=== 완료! ===")

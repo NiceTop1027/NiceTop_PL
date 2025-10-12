@@ -1,0 +1,23 @@
+# 컴파일된 파일
+*.o
+*.out
+nicetop
+
+# 시스템 파일
+.DS_Store
+*.swp
+*.swo
+*~
+
+# 빌드 디렉토리
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# 테스트 파일
+test.nt
+test_*.nt

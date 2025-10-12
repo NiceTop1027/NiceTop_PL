@@ -1,0 +1,42 @@
+# String Utilities for NiceTop
+# 문자열 유틸리티 라이브러리
+
+# 문자열 반복
+nfunc repeat(str, count) {
+    nstring result = ""
+    nint i = 0
+    nloop (i < count) {
+        result = result + str
+        i = i + 1
+    }
+    nret result
+}
+
+# 구분선 출력
+nfunc printLine(char, length) {
+    nint i = 0
+    nloop (i < length) {
+        nout(char)
+        i = i + 1
+    }
+    nout("\n")
+}
+
+# 제목 출력
+nfunc printTitle(title) {
+    nout("\n")
+    printLine("=", 50)
+    nout("  " + title + "\n")
+    printLine("=", 50)
+}
+
+# 박스 출력
+nfunc printBox(text) {
+    nout("+")
+    printLine("-", 40)
+    nout("| " + text + "\n")
+    nout("+")
+    printLine("-", 40)
+}
+
+nout("String Utils 라이브러리 로드 완료!")
