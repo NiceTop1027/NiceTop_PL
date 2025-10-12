@@ -65,6 +65,80 @@ static Value eval_primary(Interpreter* interp) {
         return value_string("");
     }
     
+    if (token.type == TOKEN_NOPEN) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value filename = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip ,
+        Value mode = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (filename.type == VAL_STRING && mode.type == VAL_STRING) {
+            FILE* f = fopen(filename.as.string, mode.as.string);
+            if (f) {
+                return value_file(f);
+            }
+        }
+        return value_null();
+    }
+    
+    if (token.type == TOKEN_NREAD) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value file_val = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (file_val.type == VAL_FILE && file_val.as.file) {
+            char buffer[4096];
+            size_t bytes = fread(buffer, 1, sizeof(buffer) - 1, file_val.as.file);
+            buffer[bytes] = '\0';
+            return value_string(buffer);
+        }
+        return value_string("");
+    }
+    
+    if (token.type == TOKEN_NWRITE) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value file_val = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip ,
+        Value content = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (file_val.type == VAL_FILE && file_val.as.file && content.type == VAL_STRING) {
+            fputs(content.as.string, file_val.as.file);
+        }
+        return value_null();
+    }
+    
+    if (token.type == TOKEN_NCLOSE) {
+        advance_interp(interp);
+        advance_interp(interp); // skip (
+        Value file_val = interpreter_eval_expression(interp);
+        advance_interp(interp); // skip )
+        
+        if (file_val.type == VAL_FILE && file_val.as.file) {
+            fclose(file_val.as.file);
+        }
+        return value_null();
+    }
+    
+    if (token.type == TOKEN_LBRACKET) {
+        advance_interp(interp); // skip [
+        Value arr = value_array(10);
+        
+        while (current_token(interp).type != TOKEN_RBRACKET && current_token(interp).type != TOKEN_EOF) {
+            Value elem = interpreter_eval_expression(interp);
+            array_push(arr.as.array, elem);
+            
+            if (current_token(interp).type == TOKEN_COMMA) {
+                advance_interp(interp);
+            }
+        }
+        advance_interp(interp); // skip ]
+        return arr;
+    }
+    
     if (token.type == TOKEN_IDENTIFIER) {
         char name[MAX_TOKEN_LENGTH];
         strcpy(name, token.value);
@@ -123,6 +197,23 @@ static Value eval_primary(Interpreter* interp) {
             // free(func_env);
             
             return result;
+        }
+        
+        // 배열 인덱스 접근
+        if (current_token(interp).type == TOKEN_LBRACKET) {
+            advance_interp(interp); // skip [
+            Value index_val = interpreter_eval_expression(interp);
+            advance_interp(interp); // skip ]
+            
+            // 변수 찾기
+            for (int i = 0; i < interp->var_count; i++) {
+                if (strcmp(interp->variables[i].name, name) == 0) {
+                    if (interp->variables[i].value.type == VAL_ARRAY && index_val.type == VAL_NUMBER) {
+                        return array_get(interp->variables[i].value.as.array, (int)index_val.as.number);
+                    }
+                }
+            }
+            return value_null();
         }
         
         // return env_get(interp->env, name);
@@ -267,7 +358,7 @@ void execute_statement(Interpreter* interp) {
         value_print(val);
     }
     else if (token.type == TOKEN_NINT || token.type == TOKEN_NFLOAT || 
-             token.type == TOKEN_NSTRING || token.type == TOKEN_NBOOL) {
+             token.type == TOKEN_NSTRING || token.type == TOKEN_NBOOL || token.type == TOKEN_NARRAY) {
         advance_interp(interp); // skip type
         Token name = current_token(interp);
         advance_interp(interp);
@@ -281,7 +372,25 @@ void execute_statement(Interpreter* interp) {
     else if (token.type == TOKEN_IDENTIFIER) {
         Token name = current_token(interp);
         advance_interp(interp);
-        if (current_token(interp).type == TOKEN_ASSIGN) {
+        
+        // 배열 인덱스 할당
+        if (current_token(interp).type == TOKEN_LBRACKET) {
+            advance_interp(interp); // skip [
+            Value index_val = interpreter_eval_expression(interp);
+            advance_interp(interp); // skip ]
+            advance_interp(interp); // skip =
+            Value val = interpreter_eval_expression(interp);
+            
+            for (int i = 0; i < interp->var_count; i++) {
+                if (strcmp(interp->variables[i].name, name.value) == 0) {
+                    if (interp->variables[i].value.type == VAL_ARRAY && index_val.type == VAL_NUMBER) {
+                        array_set(interp->variables[i].value.as.array, (int)index_val.as.number, val);
+                    }
+                    break;
+                }
+            }
+        }
+        else if (current_token(interp).type == TOKEN_ASSIGN) {
             advance_interp(interp);
             Value val = interpreter_eval_expression(interp);
             // env_set(interp->env, name.value, val);

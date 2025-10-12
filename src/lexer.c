@@ -126,6 +126,10 @@ static void read_identifier(Lexer* lexer) {
     else if (strcmp(buffer, "ntrue") == 0) type = TOKEN_NTRUE;
     else if (strcmp(buffer, "nfalse") == 0) type = TOKEN_NFALSE;
     else if (strcmp(buffer, "ninput") == 0) type = TOKEN_NINPUT;
+    else if (strcmp(buffer, "nopen") == 0) type = TOKEN_NOPEN;
+    else if (strcmp(buffer, "nclose") == 0) type = TOKEN_NCLOSE;
+    else if (strcmp(buffer, "nread") == 0) type = TOKEN_NREAD;
+    else if (strcmp(buffer, "nwrite") == 0) type = TOKEN_NWRITE;
     else if (strcmp(buffer, "and") == 0) type = TOKEN_AND;
     else if (strcmp(buffer, "or") == 0) type = TOKEN_OR;
     else if (strcmp(buffer, "not") == 0) type = TOKEN_NOT;

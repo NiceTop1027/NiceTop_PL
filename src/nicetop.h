@@ -33,6 +33,10 @@ typedef enum {
     TOKEN_NTRUE,
     TOKEN_NFALSE,
     TOKEN_NINPUT,
+    TOKEN_NOPEN,
+    TOKEN_NCLOSE,
+    TOKEN_NREAD,
+    TOKEN_NWRITE,
     TOKEN_PLUS,
     TOKEN_MINUS,
     TOKEN_MULTIPLY,
@@ -73,7 +77,8 @@ typedef enum {
     VAL_BOOL,
     VAL_NULL,
     VAL_FUNCTION,
-    VAL_ARRAY
+    VAL_ARRAY,
+    VAL_FILE
 } ValueType;
 
 // 전방 선언
@@ -105,6 +110,7 @@ struct Value {
         bool boolean;
         Function* function;
         Array* array;
+        FILE* file;
     } as;
 };
 
@@ -158,6 +164,11 @@ Value value_number(double num);
 Value value_string(const char* str);
 Value value_bool(bool b);
 Value value_null(void);
+Value value_array(int capacity);
+Value value_file(FILE* f);
+void array_push(Array* arr, Value val);
+Value array_get(Array* arr, int index);
+void array_set(Array* arr, int index, Value val);
 void value_print(Value val);
 bool value_is_truthy(Value val);
 

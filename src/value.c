@@ -28,6 +28,44 @@ Value value_null(void) {
     return val;
 }
 
+Value value_array(int capacity) {
+    Value val;
+    val.type = VAL_ARRAY;
+    val.as.array = (Array*)malloc(sizeof(Array));
+    val.as.array->elements = (Value*)malloc(sizeof(Value) * capacity);
+    val.as.array->length = 0;
+    val.as.array->capacity = capacity;
+    return val;
+}
+
+Value value_file(FILE* f) {
+    Value val;
+    val.type = VAL_FILE;
+    val.as.file = f;
+    return val;
+}
+
+void array_push(Array* arr, Value val) {
+    if (arr->length >= arr->capacity) {
+        arr->capacity *= 2;
+        arr->elements = (Value*)realloc(arr->elements, sizeof(Value) * arr->capacity);
+    }
+    arr->elements[arr->length++] = val;
+}
+
+Value array_get(Array* arr, int index) {
+    if (index < 0 || index >= arr->length) {
+        return value_null();
+    }
+    return arr->elements[index];
+}
+
+void array_set(Array* arr, int index, Value val) {
+    if (index >= 0 && index < arr->length) {
+        arr->elements[index] = val;
+    }
+}
+
 void value_print(Value val) {
     switch (val.type) {
         case VAL_NUMBER:
@@ -45,6 +83,25 @@ void value_print(Value val) {
             break;
         case VAL_NULL:
             printf("null\n");
+            break;
+        case VAL_ARRAY:
+            printf("[");
+            for (int i = 0; i < val.as.array->length; i++) {
+                if (i > 0) printf(", ");
+                Value elem = val.as.array->elements[i];
+                if (elem.type == VAL_NUMBER) {
+                    if (elem.as.number == (int)elem.as.number) {
+                        printf("%d", (int)elem.as.number);
+                    } else {
+                        printf("%g", elem.as.number);
+                    }
+                } else if (elem.type == VAL_STRING) {
+                    printf("\"%s\"", elem.as.string);
+                } else if (elem.type == VAL_BOOL) {
+                    printf("%s", elem.as.boolean ? "true" : "false");
+                }
+            }
+            printf("]\n");
             break;
         default:
             printf("unknown\n");

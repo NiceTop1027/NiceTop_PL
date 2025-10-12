@@ -205,6 +205,55 @@ nfor (nint i = 1; i <= 10; i = i + 1) {
 }
 ```
 
+### 배열
+```c
+narray 배열명 = [요소1, 요소2, ...]  # 배열 생성
+배열명[인덱스]                        # 요소 접근
+배열명[인덱스] = 값                   # 요소 수정
+```
+
+예제:
+```c
+# 배열 생성
+narray nums = [1, 2, 3, 4, 5]
+nout(nums)  # [1, 2, 3, 4, 5]
+
+# 요소 접근
+nout(nums[0])  # 1
+nout(nums[2])  # 3
+
+# 요소 수정
+nums[1] = 100
+nout(nums)  # [1, 100, 3, 4, 5]
+
+# 문자열 배열
+narray names = ["철수", "영희", "민수"]
+nout(names[1])  # 영희
+```
+
+### 파일 I/O
+```c
+nopen(파일명, 모드)    # 파일 열기 ("r", "w", "a")
+nread(파일)           # 파일 읽기
+nwrite(파일, 내용)    # 파일 쓰기
+nclose(파일)          # 파일 닫기
+```
+
+예제:
+```c
+# 파일 쓰기
+nstring f = nopen("data.txt", "w")
+nwrite(f, "Hello, World!\n")
+nwrite(f, "NiceTop is awesome!")
+nclose(f)
+
+# 파일 읽기
+nstring f2 = nopen("data.txt", "r")
+nstring content = nread(f2)
+nclose(f2)
+nout(content)
+```
+
 ## 프로그램 구조
 
 NiceTop 프로그램은 순차적으로 실행되는 문장들의 집합입니다.
@@ -309,6 +358,7 @@ show_balance()
 | `nfloat` | 실수형 타입 | `nfloat pi = 3.14` |
 | `nstring` | 문자열 타입 | `nstring name = "철수"` |
 | `nbool` | 불린 타입 | `nbool flag = ntrue` |
+| `narray` | 배열 타입 | `narray nums = [1, 2, 3]` |
 | `nif` | 조건문 if | `nif (x > 0) { }` |
 | `nelse` | 조건문 else | `nelse { }` |
 | `nloop` | while 반복문 | `nloop (i < 10) { }` |
@@ -319,6 +369,10 @@ show_balance()
 | `nret` | 반환 | `nret a + b` |
 | `nout` | 출력 | `nout("Hello")` |
 | `ninput` | 사용자 입력 | `ninput("이름: ")` |
+| `nopen` | 파일 열기 | `nopen("file.txt", "r")` |
+| `nread` | 파일 읽기 | `nread(file)` |
+| `nwrite` | 파일 쓰기 | `nwrite(file, "text")` |
+| `nclose` | 파일 닫기 | `nclose(file)` |
 | `ntrue` | 참 | `nbool flag = ntrue` |
 | `nfalse` | 거짓 | `nbool flag = nfalse` |
 
@@ -336,17 +390,16 @@ show_balance()
 ## 제한사항
 
 현재 버전에서 지원하지 않는 기능:
-- 배열/리스트 (구조 준비됨)
 - 딕셔너리/맵
 - 클래스/객체
 - 예외 처리
 - 모듈 시스템
-- 파일 I/O (구조 준비됨)
+- 다차원 배열
 
 ## 향후 계획
 
-- [ ] 배열 완전 구현
-- [ ] 파일 I/O 완전 구현
+- [ ] 배열 메서드 (push, pop, length 등)
+- [ ] 문자열 메서드 (split, join 등)
 - [ ] 표준 라이브러리 확장
 - [ ] 모듈 시스템
 - [ ] 예외 처리

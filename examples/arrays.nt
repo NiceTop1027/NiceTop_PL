@@ -1,0 +1,27 @@
+# 배열 예제
+
+nout("=== 숫자 배열 ===")
+narray nums = [1, 2, 3, 4, 5]
+nout(nums)
+
+nout("")
+nout("=== 배열 요소 접근 ===")
+nout("첫 번째 요소: " + nums[0])
+nout("세 번째 요소: " + nums[2])
+
+nout("")
+nout("=== 배열 요소 수정 ===")
+nums[1] = 100
+nout("수정 후: ")
+nout(nums)
+
+nout("")
+nout("=== 문자열 배열 ===")
+narray names = ["철수", "영희", "민수", "지영"]
+nout(names)
+
+nout("")
+nout("=== 배열 순회 ===")
+nfor (nint i = 0; i < 4; i = i + 1) {
+    nout(names[i])
+}
