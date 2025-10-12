@@ -12,6 +12,23 @@
 - 📄 파일 확장자: `.nt` (NiceTop)
 - 🚀 독립 실행 파일 - Python 불필요!
 
+## 빠른 설치
+
+### 한 줄 설치 (권장)
+```bash
+curl -sSL https://raw.githubusercontent.com/NiceTop1027/NiceTop_PL/main/install.sh | bash
+```
+
+### 수동 설치
+```bash
+git clone https://github.com/NiceTop1027/NiceTop_PL.git
+cd NiceTop_PL
+make
+sudo make install
+```
+
+자세한 설치 방법은 [INSTALL.md](INSTALL.md)를 참고하세요.
+
 ## 설치 및 실행
 
 ### 요구사항
@@ -25,12 +42,6 @@ make
 
 # 또는 테스트와 함께
 make test
-```
-
-### 설치 (선택사항)
-```bash
-# 시스템 전역 설치
-sudo make install
 ```
 
 ### 파일 실행
