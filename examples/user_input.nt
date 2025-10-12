@@ -1,0 +1,13 @@
+# 사용자 입력 예제
+
+nout("=== 사용자 정보 입력 ===")
+
+nstring name = ninput("이름: ")
+nstring age = ninput("나이: ")
+nstring city = ninput("도시: ")
+
+nout("")
+nout("=== 입력하신 정보 ===")
+nout("이름: " + name)
+nout("나이: " + age)
+nout("도시: " + city)

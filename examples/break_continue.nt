@@ -1,0 +1,30 @@
+# break와 continue 예제
+
+nout("=== break 예제 ===")
+nout("1부터 10까지 세는데 5에서 멈춤:")
+nfor (nint i = 1; i <= 10; i = i + 1) {
+    nif (i == 5) {
+        nout("5에서 break!")
+        nbreak
+    }
+    nout(i)
+}
+
+nout("")
+nout("=== continue 예제 ===")
+nout("1부터 10까지 세는데 5는 건너뜀:")
+nfor (nint j = 1; j <= 10; j = j + 1) {
+    nif (j == 5) {
+        ncontinue
+    }
+    nout(j)
+}
+
+nout("")
+nout("=== 짝수만 출력 (continue 활용) ===")
+nfor (nint k = 1; k <= 10; k = k + 1) {
+    nif (k % 2 == 1) {
+        ncontinue
+    }
+    nout(k)
+}

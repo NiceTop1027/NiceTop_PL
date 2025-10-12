@@ -166,6 +166,45 @@ nout(42)
 nout(3.14)
 ```
 
+### 사용자 입력
+```c
+ninput(프롬프트)  # 사용자로부터 문자열 입력 받기
+```
+
+예제:
+```c
+nstring name = ninput("이름을 입력하세요: ")
+nout("안녕하세요, " + name + "님!")
+
+nstring age = ninput("나이: ")
+nout("당신은 " + age + "살입니다")
+```
+
+### 제어문
+```c
+nbreak      # 루프 즉시 종료
+ncontinue   # 다음 반복으로 건너뛰기
+```
+
+예제:
+```c
+# break 예제
+nfor (nint i = 1; i <= 10; i = i + 1) {
+    nif (i == 5) {
+        nbreak  # 5에서 루프 종료
+    }
+    nout(i)  # 1, 2, 3, 4 출력
+}
+
+# continue 예제
+nfor (nint i = 1; i <= 10; i = i + 1) {
+    nif (i == 5) {
+        ncontinue  # 5 건너뛰기
+    }
+    nout(i)  # 1, 2, 3, 4, 6, 7, 8, 9, 10 출력
+}
+```
+
 ## 프로그램 구조
 
 NiceTop 프로그램은 순차적으로 실행되는 문장들의 집합입니다.
@@ -274,9 +313,12 @@ show_balance()
 | `nelse` | 조건문 else | `nelse { }` |
 | `nloop` | while 반복문 | `nloop (i < 10) { }` |
 | `nfor` | for 반복문 | `nfor (nint i=0; i<10; i=i+1) { }` |
+| `nbreak` | 루프 탈출 | `nbreak` |
+| `ncontinue` | 다음 반복 | `ncontinue` |
 | `nfunc` | 함수 정의 | `nfunc add(a, b) { }` |
 | `nret` | 반환 | `nret a + b` |
 | `nout` | 출력 | `nout("Hello")` |
+| `ninput` | 사용자 입력 | `ninput("이름: ")` |
 | `ntrue` | 참 | `nbool flag = ntrue` |
 | `nfalse` | 거짓 | `nbool flag = nfalse` |
 
@@ -294,20 +336,17 @@ show_balance()
 ## 제한사항
 
 현재 버전에서 지원하지 않는 기능:
-- 배열/리스트
+- 배열/리스트 (구조 준비됨)
 - 딕셔너리/맵
 - 클래스/객체
-- break/continue 문
 - 예외 처리
 - 모듈 시스템
-- 파일 I/O
-- 사용자 입력
+- 파일 I/O (구조 준비됨)
 
 ## 향후 계획
 
-- [ ] 배열 자료구조
-- [ ] break/continue 문
-- [ ] 사용자 입력 (ninput)
-- [ ] 표준 라이브러리
+- [ ] 배열 완전 구현
+- [ ] 파일 I/O 완전 구현
+- [ ] 표준 라이브러리 확장
 - [ ] 모듈 시스템
-- [ ] 파일 I/O
+- [ ] 예외 처리

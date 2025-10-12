@@ -1,0 +1,13 @@
+# 간단한 대화형 계산기
+
+nout("=== NiceTop 계산기 ===")
+
+nstring a = ninput("첫 번째 숫자: ")
+nstring b = ninput("두 번째 숫자: ")
+
+nout("")
+nout("결과:")
+nout(a + " + " + b + " = 계산 기능 구현 예정")
+nout(a + " - " + b + " = 계산 기능 구현 예정")
+nout(a + " * " + b + " = 계산 기능 구현 예정")
+nout(a + " / " + b + " = 계산 기능 구현 예정")
